@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin panel</title>
+</head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link rel="stylesheet" href="./style1.css">
+<link rel="stylesheet" href="./all.min.css">
+<body>
+  <header class="position-sticky top-0 z-index">
+    <nav class="navbar navbar-expand-lg navbar-light bg-darkblue">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="col-4 d-flex align-items-center nav-text ">
+            <a class="navbar-brand text-white px-3 fs-2" href="#">
+                <img  src="img/logo.png" alt="">
+            </a>
+
+            <select class="selected border border-2 rounded-2 border-primary btn-darkblue text-light p-1">
+              <option class="text-light">Material Dark</option>
+              <option class="text-light">Light</option>
+              <option class="text-light">Cosmic</option>
+            </select>
+          </div>
+
+          <div class="col-8 d-flex justify-content-end align-items-center">
+            <ul class="navbar-nav d-flex align-items-center">
+                <input class="p-2 m-3"type="text" placeholder="Search..">
+                <img class="m-3" width="25px" src="img/menu.png" alt="">
+                <img width="25px" src="img/notification.png " alt="">
+                <li class="text-white px-3 border-left"><img src="img/avatar-1.jpeg" class="rounded-circle me-1" width="40"
+                    alt="">
+                 </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <section>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-2 p-0">
+          <div class="scrollbar bg-black">
+            <ul class="p-0"> 
+            <li class="ps-3  py-3 ps-4 border1"><a href="dashboard.html" class="text-white"><i class="fa-solid fa-chart-line p-2"></i>dashboard</a></li>
+              <li class="ps-3  py-3 ps-4 border1"><a href="user.html" class="text-white "><i class="fa-solid fa-users me-2 fs-4"></i>Admin/User</a></li>
+            </ul>
+            <button class="m-5" onclick="logout()">Logout</button>
+          </div>
+        </div>
+
+
+        <div class="col-10 p-3">
+          
+          <div class="main-title">
+            <h1 class="mt-4">Welcome to DashBoard</h1>
+          </div>
+          
+          <section>
+            <div class="container">
+              <div class="row">
+                <div class="box">
+                  <hr class="line" style="color: white;">
+                  <table>
+                    <tr>
+                      <td class="text">empid</td>
+                      <td><input type="text" id="empid" /></td>
+                    </tr>
+                    <tr>
+                      <td class="text">name</td>
+                      <td><input type="text" id="name" /></td>
+                    </tr>
+                    <tr>
+                      <td class="text">email</td>
+                      <td><input type="text" id="email" /></td>
+                    </tr>
+                    <tr>
+                      <td class="text">password</td>
+                      <td><input type="text" id="password" /></td>
+                    </tr>
+                    <tr>
+                      <td class="text">phone</td>
+                      <td><input type="text" id="phone" /></td>
+                    </tr>
+                    <tr>
+                      <td class="text">designation</td>
+                      <td><input type="text" id="designation" /></td>
+                    </tr>
+                    <tr>
+                      <td class="text">city</td>
+                      <td><input type="text" id="city" /></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td>
+                        <input type="button" onclick="save()" id="addbtn" value="submit"/></td>
+                      </td>
+                    </tr>
+                  </table><br /><br/>
+                
+                  <table border="2" class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th class="heading">empid</th>
+                        <th class="heading">name</th>
+                        <th class="heading">email</th> 
+                        <th class="heading">password</th> 
+                        <th class="heading">phone</th> 
+                        <th class="heading">designation</th>
+                        <th class="heading">city</th>
+
+                      </tr>
+                    </thead>
+                    <tbody id="record"></tbody>
+                  </table>
+                  <br>
+                  <input type="button" onclick="clr()" id="clrbtn" value="Clear All" />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <script type="text/javascript">
+            let data = [];
+        
+            const viewdata = () => {
+              document.getElementById('editbtn').style.display = "none";
+              document.getElementById('addbtn').style.display = "block";
+        
+              let val = JSON.parse(localStorage.getItem('user'));
+              let record = (val == null) ? [] : val;
+              let tbl = "";
+              record.map((v) => {
+                const { empid, name, email, password, phone, designation, city, } = v;
+                tbl += `
+                            <tr>
+                                <td>${empid}</td>        
+                                <td>${name}</td> 
+                                <td>${email}</td>        
+                                <td>${password}</td> 
+                                <td>${phone}</td>        
+                                <td>${designation}</td> 
+                                <td>${city}</td> 
+                                <td><button onclick="del(${userid})">Delete</button>
+                                </td>      
+                            </tr>
+                        `
+              });
+              document.getElementById('record').innerHTML = tbl;
+            }
+            viewdata();
+        
+            const save = () => {
+              let empid = document.getElementById('empid').value;
+              let name = document.getElementById('name').value;
+              let email = document.getElementById('email').value;
+              let password = document.getElementById('password').value;
+              let phone = document.getElementById('phone').value;
+              let designation = document.getElementById('designation').value;
+              let city = document.getElementById('city').value;
+
+
+        
+        
+        
+              let obj = {
+                userid: Math.floor(Math.random() * 10000),
+                name: name,
+                task: task
+              }
+        
+              if (userid) {
+                let val = JSON.parse(localStorage.getItem('user'));
+                for (let i in val) {
+                  if (val[i].userid == userid) {
+                    val[i].empid = empid;
+                    val[i].name = name;
+                    val[i].email = email;
+                    val[i].password = password;
+                    val[i].phone = phone;
+                    val[i].designation = designation;
+                    val[i].city = city;
+                  }
+                }
+        
+                localStorage.setItem('user', JSON.stringify(val));
+                viewdata();
+              } else {
+        
+                if (localStorage.getItem('user') === null || localStorage.getItem('user') === undefined) {
+                  data.push(obj);
+                  localStorage.setItem('user', JSON.stringify(data));
+                } else {
+                  let val = JSON.parse(localStorage.getItem('user'));
+                  val.push(obj);
+                  localStorage.setItem('user', JSON.stringify(val));
+                }
+                viewdata();
+              }
+        
+              document.getElementById('empid').value = "";
+              document.getElementById('name').value = "";
+              document.getElementById('email').value = "";
+              document.getElementById('password').value = "";
+              document.getElementById('phone').value = "";
+              document.getElementById('designation').value = "";
+              document.getElementById('city').value = "";
+            }
+        
+            const del = (id) => {
+              let alldata = JSON.parse(localStorage.getItem('user'));
+              let ans = alldata.filter((val) => {
+                return val.userid != id;
+              })
+              localStorage.setItem('user', JSON.stringify(ans));
+              viewdata();
+            }
+        
+  
+        
+            const clr = () => {
+              localStorage.removeItem('user');
+              viewdata();
+            }
+          </script>
+
+    <script type="text/javascript">
+        let checkUser = JSON.parse(localStorage.getItem('checkUserLogin'));
+    
+        if(!window){
+            window.location.href = "index.html";
+        }
+        const logout = () =>{
+            localStorage.removeItem('checkUserLogin');
+            window.location.href = "index.html";
+        }
+        let allUser = JSON.parse(localStorage.getItem('register'));
+        let ans = allUser.length;
+
+        
+    </script>
+    <script type="text/javascript">
+      let a = 0;
+        let user = JSON.parse(localStorage.getItem('register'));
+        let as = user.filter((val) => {
+          if(val.role == "user"){
+            return a++;
+          }
+        });
+        document.getElementById('count').innerHTML = a;
+    </script>
+
+    
+    <!-- <script src="watchman.js"></script> -->
+
+</body>
+</html>
+
+
